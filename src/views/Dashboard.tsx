@@ -12,6 +12,7 @@ import { CERT_PRICE_EUR } from '../data/cbam'
 import { forecast, forecastTotals, EUR, NUM } from '../lib/calc'
 import { flaggedSuppliers } from '../lib/flag'
 import { Card, SectionTitle, Stat, Pill } from '../components/ui'
+import ProvenanceCard from '../components/ProvenanceCard'
 
 const TIMELINE = [
   {
@@ -186,10 +187,16 @@ export default function Dashboard() {
         </div>
       </Card>
 
+      {/* Blended real-history → projection (the defensible "past + present") */}
+      <ProvenanceCard />
+
       <p className="text-xs text-mute">
-        All figures are illustrative mock values. The legal cert price is the
-        Commission's quarterly average, modelled here as a fixed rate. Default
-        intensities and mark-ups follow Reg. (EU) 2025/2621.
+        Independent estimates, facilities, owners and routes are <span className="text-text">real</span>{' '}
+        (Climate TRACE, CC BY 4.0). Self-reported figures are illustrative supplier
+        claims; CBAM default values and mark-ups follow Reg. (EU) 2025/2621, and the
+        cert price is the Commission's quarterly average modelled as a fixed rate.
+        Free allocation is modelled via the CBAM phase-in factor (not a separate
+        benchmark deduction) to avoid double-counting.
       </p>
     </div>
   )

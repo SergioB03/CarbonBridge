@@ -10,6 +10,8 @@
       "country": "KOR",
       "subsector": "iron-and-steel",
       "route": "BF/BOF",
+      "lat": 34.92026635257,
+      "lon": 127.73213500275,
       "owner": {
         "parent": "POSCO Holdings Inc",
         "lei": "988400E5HRVX81AYLM04",
@@ -83,6 +85,8 @@
       "country": "CHN",
       "subsector": "iron-and-steel",
       "route": "BF/BOF",
+      "lat": 41.1392046339499,
+      "lon": 122.981078374674,
       "owner": {
         "parent": "Angang Steel Co Ltd",
         "lei": null,
@@ -156,6 +160,8 @@
       "country": "IND",
       "subsector": "iron-and-steel",
       "route": "BF/BOF",
+      "lat": 22.7882898676171,
+      "lon": 86.200136477077,
       "owner": {
         "parent": "Tata Steel Ltd",
         "lei": "335800E6C75YGSGD5T66",
@@ -229,6 +235,8 @@
       "country": "TUR",
       "subsector": "iron-and-steel",
       "route": "EAF",
+      "lat": 36.7814103000801,
+      "lon": 36.2056452039363,
       "owner": {
         "parent": "Magnitogorskiy Metallurgicheskiy Kombinat PJSC",
         "lei": "253400XSJ4C01YMCXG44",
@@ -302,6 +310,8 @@
       "country": "TUR",
       "subsector": "cement",
       "route": "integrated dry",
+      "lat": 40.7820049734054,
+      "lon": 29.6018683802237,
       "owner": {
         "parent": "Nuh Çimento Sanayi AŞ",
         "lei": "7890004MW0TKBH5J4N45",
@@ -375,6 +385,8 @@
       "country": "VNM",
       "subsector": "cement",
       "route": "integrated dry",
+      "lat": 18.9388181563685,
+      "lon": 105.35290653494,
       "owner": {
         "parent": "Philippine Investment-Management Inc",
         "lei": null,
@@ -448,6 +460,8 @@
       "country": "ARE",
       "subsector": "aluminum",
       "route": "Smelting",
+      "lat": 24.792631,
+      "lon": 54.721203,
       "owner": {
         "parent": "Investment Corporation of Dubai ",
         "lei": "6354001CBBZXJHDGZY76",
@@ -521,6 +535,8 @@
       "country": "IND",
       "subsector": "aluminum",
       "route": "Smelting",
+      "lat": 21.808896,
+      "lon": 84.041026,
       "owner": {
         "parent": "Vedanta Inc",
         "lei": "213800V1LKF52CA44390",

@@ -1,6 +1,13 @@
 # CarbonBridge — Mock Data & Production Sources
 
-The POC runs entirely on **mock JSON** (`src/data/suppliers.ts`, `src/data/cbam.ts`). All numbers are **illustrative** but **calibrated to published orders of magnitude**. This file is the **"where would the real data come from?"** reference for the data-sourcing and architecture questions.
+The POC is **mostly real data now.** Supplier facilities, owners, LEIs, locations, production routes, multi-year emissions intensity, and the CBAM-scope-vs-full-footprint split are a **real static extract from Climate TRACE** (`src/data/history.json`, manufacturing v5.7.0, co2e_100yr, CC BY 4.0). Only the **self-reported supplier claims** are illustrative (no public registry of self-reports exists), and the **CBAM default values / cert price** are anchored to published numbers where available. This file is the **"where would the rest of the data come from?"** reference.
+
+**Why a static extract, not a live API:** Climate TRACE's beta API only exposes the latest year per asset and warns it is unreliable for production. The multi-year series lives in the bulk packages, so we pre-extracted the 8 demo facilities (2021–2025 + partial 2026) once — exactly the "pre-cache the CSV" guidance. The pull is reproducible from `cttmp/` (discover → download manufacturing package → parse).
+
+### CBAM cost modelling note (read before a judge asks)
+We model the free-allocation phase-out via the **CBAM factor** (2.5% in 2026 → 100% by 2034), i.e. `cost = embedded_intensity × volume × CBAM_factor × cert_price`. We deliberately do **not** also subtract the EU-ETS benchmark, because the phase-in factor already represents the free-allocation reduction — subtracting both would double-count. The benchmark (BF/BOF 1.37, DRI/EAF 0.481, scrap EAF 0.072) is shown as best-practice context and drives the map colouring, not the price.
+
+**Aluminium scope:** CBAM prices only direct + PFC emissions for aluminium (~2.5 tCO₂e/t here), **not** the ~10–12 tCO₂e/t cradle-to-gate that's dominated by electrolysis electricity. We surface both and price only the in-scope figure.
 
 ## Live integrations (actually wired, no mock)
 

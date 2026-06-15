@@ -1,188 +1,140 @@
-import type { Supplier } from '../types'
+import type { Supplier, Confidence, CommodityGroup, ProductionRoute } from '../types'
+import history from './history.json'
 
-// CarbonBridge — MOCK supplier data.
-// All numbers are ILLUSTRATIVE but calibrated to published orders of magnitude
-// (e.g. Chinese steel slab CBAM default ~3.167 vs ~1.37 benchmark tCO2e/t).
-// Intensities are tCO2e per tonne of product. See docs/MOCK_DATA.md.
+// CarbonBridge — supplier book derived from REAL Climate TRACE facility data
+// (src/data/history.json, manufacturing v5.7.0, CC BY 4.0) plus a CBAM policy +
+// commercial overlay. The independent estimate, owner, LEI, location, route and
+// full-footprint are REAL. Self-reported figures are ILLUSTRATIVE supplier
+// claims (no public registry of self-reports exists yet), and the CBAM default
+// values / benchmarks / import volumes are anchored to published numbers where
+// available, illustrative otherwise. See docs/MOCK_DATA.md.
 //
-// Persona: "Meridian Metals BV" — a MID-MARKET importer bringing in well over
-// the 50 t/year exemption threshold of steel & aluminium into the EU.
+// Persona: "Meridian Metals BV" — a mid-market importer (> 50 t/yr) sourcing
+// steel, aluminium and cement precursors from these real producers.
 
 export const IMPORTER = {
   name: 'Meridian Metals BV',
   country: 'Netherlands',
-  eori: 'NL8124' + '93579',
-  // Sum of annualTonnesImported below — comfortably above the 50 t exemption.
+  eori: 'NL812493579',
   note: 'Mid-market importer, > 50 t/year (above the Omnibus exemption).',
 }
 
-export const SUPPLIERS: Supplier[] = [
-  {
-    id: 'sup-cn-steel-1',
-    name: 'Yangtze Metals Trading Ltd', // trader name, not the mill
-    facilityName: 'Hangang-area integrated works (unconfirmed)',
-    country: 'China',
-    countryCode: 'cn',
-    lat: 38.04,
-    lon: 114.51,
-    commodity: 'steel',
-    cnCode: '72071100',
-    productionRoute: 'BF-BOF',
-    selfReported: 1.9,
-    independentEstimate: { low: 2.6, high: 3.2 },
-    estimateConfidence: 'high',
-    countryDefaultValue: 3.167,
-    benchmark: 1.37,
-    annualTonnesImported: 4200,
-    inSharedPool: false,
-    matchConfidence: 'medium',
+const ISO2: Record<string, string> = {
+  KOR: 'kr', CHN: 'cn', IND: 'in', TUR: 'tr', VNM: 'vn', ARE: 'ae',
+}
+
+interface Overlay {
+  commodity: CommodityGroup
+  cnCode: string
+  route: ProductionRoute
+  /** ILLUSTRATIVE supplier self-reported intensity (tCO₂/t). */
+  selfReported: number
+  /** Punitive CBAM default (Reg. (EU) 2025/2621), anchored where known. */
+  countryDefaultValue: number
+  /** EU best-practice benchmark for the route (BF/BOF 1.37, DRI/EAF 0.481, …). */
+  benchmark: number
+  annualTonnesImported: number
+  inSharedPool: boolean
+  matchConfidence: Confidence
+  matchBasis: string
+}
+
+// keyed by Climate TRACE source_id
+const OVERLAY: Record<string, Overlay> = {
+  '1566956': { // POSCO Gwangyang (KOR, BF/BOF) — consistent, verified
+    commodity: 'steel', cnCode: '72083900', route: 'BF-BOF',
+    selfReported: 1.95, countryDefaultValue: 2.71, benchmark: 1.37,
+    annualTonnesImported: 2600, inSharedPool: true, matchConfidence: 'high',
+    matchBasis: 'country + CN code + named installation (verified in pool)',
+  },
+  '1566610': { // Angang (CHN, BF/BOF) — under-reports vs real → flagged
+    commodity: 'steel', cnCode: '72071100', route: 'BF-BOF',
+    selfReported: 1.42, countryDefaultValue: 3.167, benchmark: 1.37,
+    annualTonnesImported: 4200, inSharedPool: false, matchConfidence: 'medium',
     matchBasis: 'country + CN code; named installation unconfirmed (trader-fronted)',
   },
-  {
-    id: 'sup-in-steel-1',
-    name: 'Bharat Steel Exports Pvt Ltd',
-    facilityName: 'Jamshedpur integrated works',
-    country: 'India',
-    countryCode: 'in',
-    lat: 22.8,
-    lon: 86.18,
-    commodity: 'steel',
-    cnCode: '72082700',
-    productionRoute: 'BF-BOF',
-    selfReported: 2.3,
-    independentEstimate: { low: 2.2, high: 2.7 },
-    estimateConfidence: 'medium',
-    countryDefaultValue: 3.02,
-    benchmark: 1.37,
-    annualTonnesImported: 3100,
-    inSharedPool: true,
-    matchConfidence: 'high',
+  '1566853': { // Tata Jamshedpur (IND, BF/BOF) — consistent, verified
+    commodity: 'steel', cnCode: '72082700', route: 'BF-BOF',
+    selfReported: 1.92, countryDefaultValue: 3.02, benchmark: 1.37,
+    annualTonnesImported: 3100, inSharedPool: true, matchConfidence: 'high',
     matchBasis: 'country + CN code + named installation (verified in pool)',
   },
-  {
-    id: 'sup-kr-steel-1',
-    name: 'Hanbit Steel Co.',
-    facilityName: 'Gwangyang Works',
-    country: 'South Korea',
-    countryCode: 'kr',
-    lat: 34.94,
-    lon: 127.7,
-    commodity: 'steel',
-    cnCode: '72083900',
-    productionRoute: 'BF-BOF',
-    selfReported: 1.98,
-    independentEstimate: { low: 1.9, high: 2.3 },
-    estimateConfidence: 'high',
-    countryDefaultValue: 2.71,
-    benchmark: 1.37,
-    annualTonnesImported: 2600,
-    inSharedPool: true,
-    matchConfidence: 'high',
-    matchBasis: 'country + CN code + named installation (verified in pool)',
-  },
-  {
-    id: 'sup-tr-steel-1',
-    name: 'Anadolu Çelik A.Ş.',
-    facilityName: 'İzmir EAF mini-mill',
-    country: 'Türkiye',
-    countryCode: 'tr',
-    lat: 38.42,
-    lon: 27.14,
-    commodity: 'steel',
-    cnCode: '72142000',
-    productionRoute: 'EAF',
-    selfReported: 0.72,
-    independentEstimate: { low: 0.65, high: 0.98 },
-    estimateConfidence: 'medium',
-    countryDefaultValue: 2.43,
-    benchmark: 0.6,
-    annualTonnesImported: 1900,
-    inSharedPool: false,
-    matchConfidence: 'high',
+  '1567076': { // MMK Türkiye (TUR, EAF) — clean scrap/EAF route
+    commodity: 'steel', cnCode: '72142000', route: 'EAF',
+    selfReported: 0.49, countryDefaultValue: 2.0, benchmark: 0.481,
+    annualTonnesImported: 1900, inSharedPool: false, matchConfidence: 'high',
     matchBasis: 'country + CN code + named EAF installation',
   },
-  {
-    id: 'sup-br-steel-1',
-    name: 'Aço Sul Comércio Ltda',
-    facilityName: undefined, // genuinely unresolved
-    country: 'Brazil',
-    countryCode: 'br',
-    lat: -19.47,
-    lon: -42.54,
-    commodity: 'steel',
-    cnCode: '72072000',
-    productionRoute: 'EAF',
-    selfReported: 0.61,
-    independentEstimate: { low: 0.55, high: 1.05 },
-    estimateConfidence: 'low', // wide range, low confidence → never flagged
-    countryDefaultValue: 2.38,
-    benchmark: 0.6,
-    annualTonnesImported: 950,
-    inSharedPool: false,
-    matchConfidence: 'low',
-    matchBasis: 'country + CN code only; producing mill unknown (trader)',
-  },
-  {
-    id: 'sup-ae-alu-1',
-    name: 'Gulf Light Metals FZE',
-    facilityName: 'Jebel Ali potline (unconfirmed)',
-    country: 'United Arab Emirates',
-    countryCode: 'ae',
-    lat: 25.01,
-    lon: 55.06,
-    commodity: 'aluminium',
-    cnCode: '76011000',
-    productionRoute: 'n/a',
-    selfReported: 6.8,
-    independentEstimate: { low: 8.5, high: 11.0 },
-    estimateConfidence: 'high',
-    countryDefaultValue: 18.2, // aluminium defaults are large (incl. indirect)
-    benchmark: 1.51,
-    annualTonnesImported: 1400,
-    inSharedPool: false,
-    matchConfidence: 'medium',
-    matchBasis: 'country + CN code; smelter inferred from grid + GEM tracker',
-  },
-  {
-    id: 'sup-in-alu-1',
-    name: 'Deccan Aluminium Industries',
-    facilityName: 'Hirakud smelter',
-    country: 'India',
-    countryCode: 'in',
-    lat: 21.52,
-    lon: 83.87,
-    commodity: 'aluminium',
-    cnCode: '76012000',
-    productionRoute: 'n/a',
-    selfReported: 9.4,
-    independentEstimate: { low: 9.0, high: 11.5 },
-    estimateConfidence: 'medium',
-    countryDefaultValue: 18.2,
-    benchmark: 1.51,
-    annualTonnesImported: 1150,
-    inSharedPool: true,
-    matchConfidence: 'high',
-    matchBasis: 'country + CN code + named smelter (verified in pool)',
-  },
-  {
-    id: 'sup-tr-cement-1',
-    name: 'Marmara Çimento San.',
-    facilityName: 'Gebze clinker plant',
-    country: 'Türkiye',
-    countryCode: 'tr',
-    lat: 40.8,
-    lon: 29.43,
-    commodity: 'cement',
-    cnCode: '25232900',
-    productionRoute: 'n/a',
-    selfReported: 0.63,
-    independentEstimate: { low: 0.6, high: 0.78 },
-    estimateConfidence: 'medium',
-    countryDefaultValue: 0.88,
-    benchmark: 0.55,
-    annualTonnesImported: 5200,
-    inSharedPool: false,
-    matchConfidence: 'high',
+  '1897887': { // Körfez Cement (TUR) — big default-vs-actual gap
+    commodity: 'cement', cnCode: '25232900', route: 'n/a',
+    selfReported: 0.80, countryDefaultValue: 1.584, benchmark: 0.7,
+    annualTonnesImported: 5200, inSharedPool: false, matchConfidence: 'high',
     matchBasis: 'country + CN code + named clinker plant',
   },
-]
+  '32439362': { // Vissai Do Luong (VNM cement)
+    commodity: 'cement', cnCode: '25232900', route: 'n/a',
+    selfReported: 0.55, countryDefaultValue: 0.95, benchmark: 0.7,
+    annualTonnesImported: 3000, inSharedPool: false, matchConfidence: 'medium',
+    matchBasis: 'country + CN code; producing kiln inferred',
+  },
+  '3672937': { // Taweelah / EGA (ARE alu) — CBAM-scope vs full-footprint story
+    commodity: 'aluminium', cnCode: '76011000', route: 'n/a',
+    selfReported: 2.1, countryDefaultValue: 4.0, benchmark: 1.514,
+    annualTonnesImported: 1400, inSharedPool: false, matchConfidence: 'medium',
+    matchBasis: 'country + CN code; smelter inferred from grid + GEM tracker',
+  },
+  '3673075': { // Jharsuguda / Vedanta (IND alu)
+    commodity: 'aluminium', cnCode: '76012000', route: 'n/a',
+    selfReported: 2.4, countryDefaultValue: 4.0, benchmark: 1.514,
+    annualTonnesImported: 1150, inSharedPool: true, matchConfidence: 'high',
+    matchBasis: 'country + CN code + named smelter (verified in pool)',
+  },
+}
+
+// Confidence → ± band on the real measured intensity (the independent estimate
+// range is derived from Climate TRACE's own confidence flag, not invented).
+const BAND: Record<Confidence, number> = { high: 0.06, medium: 0.1, low: 0.2 }
+const r2 = (n: number) => Math.round(n * 100) / 100
+
+export const SUPPLIERS: Supplier[] = history.facilities.map((f) => {
+  const o = OVERLAY[String(f.id)]
+  const intensity = f.latest.intensity // real, CBAM-scope
+  const band = BAND[f.confidence as Confidence]
+  return {
+    id: `ct-${f.id}`,
+    name: `${shortOwner(f.owner.parent)} — ${shortPlant(f.name)}`,
+    facilityName: f.name,
+    country: f.country,
+    countryCode: ISO2[f.country] ?? 'un',
+    lat: f.lat ?? 0,
+    lon: f.lon ?? 0,
+    commodity: o.commodity,
+    cnCode: o.cnCode,
+    productionRoute: o.route,
+    selfReported: o.selfReported,
+    independentEstimate: { low: r2(intensity * (1 - band)), high: r2(intensity * (1 + band)) },
+    estimateConfidence: f.confidence as Confidence,
+    countryDefaultValue: o.countryDefaultValue,
+    benchmark: o.benchmark,
+    annualTonnesImported: o.annualTonnesImported,
+    inSharedPool: o.inSharedPool,
+    matchConfidence: o.matchConfidence,
+    matchBasis: o.matchBasis,
+    historyId: f.id,
+    owner: f.owner,
+    fullFootprint: f.latest.fullIntensity ?? undefined,
+  }
+})
+
+function shortOwner(p: string): string {
+  return p
+    .replace(/\b(Holdings|Inc|Ltd|PJSC|AŞ|Co|Corporation of|Sanayi)\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .slice(0, 3)
+    .join(' ')
+}
+function shortPlant(n: string): string {
+  return n.replace(/\b(steel plant|aluminium plant|Cement Plant|plant)\b/gi, '').replace(/\s+/g, ' ').trim()
+}

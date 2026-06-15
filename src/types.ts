@@ -60,6 +60,17 @@ export interface Supplier {
   // --- Entity resolution (NEVER claimed as automatic) ---
   matchConfidence: Confidence
   matchBasis: string
+
+  // --- Real provenance (Climate TRACE) ---
+  /** Climate TRACE source_id → links to the multi-year series in history.json. */
+  historyId?: number
+  /** Resolved owner from Climate TRACE ownership data (real). */
+  owner?: { parent: string; lei: string | null; hq: string | null }
+  /**
+   * Cradle-to-gate intensity incl. purchased electricity (tCO₂e/t). For steel &
+   * aluminium this is mostly OUT of CBAM scope — shown for context, not pricing.
+   */
+  fullFootprint?: number
 }
 
 /** Output of the verification-priority triage check for one supplier. */
