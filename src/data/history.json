@@ -1,0 +1,592 @@
+{
+  "source": "Climate TRACE — manufacturing, co2e_100yr (CC BY 4.0)",
+  "release": "v5.7.0",
+  "note": "emissions_factor = CBAM-scope intensity (steel: direct; aluminium: direct+PFCs). fullIntensity = cradle-to-gate incl. purchased electricity (other2). Monthly source data aggregated to production-weighted annual.",
+  "pulled": "static extract — no live API at runtime",
+  "facilities": [
+    {
+      "id": 1566956,
+      "name": "POSCO Gwangyang steel plant",
+      "country": "KOR",
+      "subsector": "iron-and-steel",
+      "route": "BF/BOF",
+      "owner": {
+        "parent": "POSCO Holdings Inc",
+        "lei": "988400E5HRVX81AYLM04",
+        "hq": "KOR"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 1.9,
+        "high": 1.9
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 1.9,
+        "fullIntensity": 2.227
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 1.9,
+          "fullIntensity": 2.273,
+          "emissions": 36406151,
+          "production": 19161132,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 1.9,
+          "fullIntensity": 2.252,
+          "emissions": 32587562,
+          "production": 17151348,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 1.9,
+          "fullIntensity": 2.244,
+          "emissions": 34626404,
+          "production": 18224423,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 1.9,
+          "fullIntensity": 2.2,
+          "emissions": 34799208,
+          "production": 18315373,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 1.9,
+          "fullIntensity": 2.227,
+          "emissions": 33237660,
+          "production": 17493505,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 1.9,
+          "fullIntensity": 2.231,
+          "emissions": 9554373,
+          "production": 5028618,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 1566610,
+      "name": "Angang Steel Co Ltd",
+      "country": "CHN",
+      "subsector": "iron-and-steel",
+      "route": "BF/BOF",
+      "owner": {
+        "parent": "Angang Steel Co Ltd",
+        "lei": null,
+        "hq": "CHN"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 1.9,
+        "high": 1.9
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 1.9,
+        "fullIntensity": 2.37
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 1.9,
+          "fullIntensity": 2.437,
+          "emissions": 35068421,
+          "production": 18457064,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 1.9,
+          "fullIntensity": 2.423,
+          "emissions": 32057419,
+          "production": 16872326,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 1.9,
+          "fullIntensity": 2.42,
+          "emissions": 33685060,
+          "production": 17728979,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 1.9,
+          "fullIntensity": 2.397,
+          "emissions": 31049504,
+          "production": 16341844,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 1.9,
+          "fullIntensity": 2.37,
+          "emissions": 31679425,
+          "production": 16673382,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 1.9,
+          "fullIntensity": 2.388,
+          "emissions": 5744227,
+          "production": 3023277,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 1566853,
+      "name": "Tata Steel Jamshedpur steel plant",
+      "country": "IND",
+      "subsector": "iron-and-steel",
+      "route": "BF/BOF",
+      "owner": {
+        "parent": "Tata Steel Ltd",
+        "lei": "335800E6C75YGSGD5T66",
+        "hq": "IND"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 1.9,
+        "high": 1.9
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 1.9,
+        "fullIntensity": 2.456
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 1.9,
+          "fullIntensity": 2.474,
+          "emissions": 17121763,
+          "production": 9011454,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 1.9,
+          "fullIntensity": 2.469,
+          "emissions": 13366301,
+          "production": 7034895,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 1.9,
+          "fullIntensity": 2.479,
+          "emissions": 15937713,
+          "production": 8388270,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 1.9,
+          "fullIntensity": 2.46,
+          "emissions": 16653502,
+          "production": 8765001,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 1.9,
+          "fullIntensity": 2.456,
+          "emissions": 16876716,
+          "production": 8882482,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 1.9,
+          "fullIntensity": 2.414,
+          "emissions": 4981631,
+          "production": 2621911,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 1567076,
+      "name": "MMK Türkiye Metallurgical Payas plant",
+      "country": "TUR",
+      "subsector": "iron-and-steel",
+      "route": "EAF",
+      "owner": {
+        "parent": "Magnitogorskiy Metallurgicheskiy Kombinat PJSC",
+        "lei": "253400XSJ4C01YMCXG44",
+        "hq": "RUS"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 0.487,
+        "high": 0.488
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 0.488,
+        "fullIntensity": 0.897
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 0.488,
+          "fullIntensity": 0.923,
+          "emissions": 972775,
+          "production": 1995435,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 0.488,
+          "fullIntensity": 0.907,
+          "emissions": 821723,
+          "production": 1685586,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 0.487,
+          "fullIntensity": 0.915,
+          "emissions": 716006,
+          "production": 1468731,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 0.487,
+          "fullIntensity": 0.892,
+          "emissions": 788516,
+          "production": 1617469,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 0.488,
+          "fullIntensity": 0.897,
+          "emissions": 806828,
+          "production": 1655033,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 0.488,
+          "fullIntensity": 0.95,
+          "emissions": 201507,
+          "production": 413347,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 1897887,
+      "name": "Körfez Cement Plant",
+      "country": "TUR",
+      "subsector": "cement",
+      "route": "integrated dry",
+      "owner": {
+        "parent": "Nuh Çimento Sanayi AŞ",
+        "lei": "7890004MW0TKBH5J4N45",
+        "hq": "TUR"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 0.786,
+        "high": 0.786
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 0.786,
+        "fullIntensity": null
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 1892882,
+          "production": 2409319,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 2471717,
+          "production": 3146079,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 2811307,
+          "production": 3578319,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 2768786,
+          "production": 3524198,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 3161339,
+          "production": 4023851,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 0.786,
+          "fullIntensity": null,
+          "emissions": 842027,
+          "production": 1071758,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 32439362,
+      "name": "Vissai Do Luong Cement Plant",
+      "country": "VNM",
+      "subsector": "cement",
+      "route": "integrated dry",
+      "owner": {
+        "parent": "Philippine Investment-Management Inc",
+        "lei": null,
+        "hq": "PHL"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 0.587,
+        "high": 0.587
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 0.587,
+        "fullIntensity": null
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 2839073,
+          "production": 4835181,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 3402587,
+          "production": 5794892,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 2362158,
+          "production": 4022955,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 3132955,
+          "production": 5335687,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 2940501,
+          "production": 5007920,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 0.587,
+          "fullIntensity": null,
+          "emissions": 883648,
+          "production": 1504927,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 3672937,
+      "name": "Taweelah-Abu Dhabi aluminium plant",
+      "country": "ARE",
+      "subsector": "aluminum",
+      "route": "Smelting",
+      "owner": {
+        "parent": "Investment Corporation of Dubai ",
+        "lei": "6354001CBBZXJHDGZY76",
+        "hq": "ARE"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 2.5,
+        "high": 2.5
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 2.5,
+        "fullIntensity": 9.779
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 2.5,
+          "fullIntensity": 10.938,
+          "emissions": 3128754,
+          "production": 1251502,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 2.5,
+          "fullIntensity": 10.084,
+          "emissions": 3543385,
+          "production": 1417354,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 2.5,
+          "fullIntensity": 10.02,
+          "emissions": 3540942,
+          "production": 1416377,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 2.5,
+          "fullIntensity": 9.532,
+          "emissions": 3459725,
+          "production": 1383890,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 2.5,
+          "fullIntensity": 9.779,
+          "emissions": 3491618,
+          "production": 1396647,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 2.5,
+          "fullIntensity": 9.779,
+          "emissions": 894359,
+          "production": 357744,
+          "partial": true
+        }
+      ]
+    },
+    {
+      "id": 3673075,
+      "name": "Jharsuguda aluminium plant",
+      "country": "IND",
+      "subsector": "aluminum",
+      "route": "Smelting",
+      "owner": {
+        "parent": "Vedanta Inc",
+        "lei": "213800V1LKF52CA44390",
+        "hq": "BHS"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 2.5,
+        "high": 2.5
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 2.5,
+        "fullIntensity": 12.489
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 2.5,
+          "fullIntensity": 12.645,
+          "emissions": 3315437,
+          "production": 1326175,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 2.5,
+          "fullIntensity": 12.598,
+          "emissions": 3347766,
+          "production": 1339106,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 2.5,
+          "fullIntensity": 12.774,
+          "emissions": 3407560,
+          "production": 1363024,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 2.5,
+          "fullIntensity": 12.699,
+          "emissions": 3335222,
+          "production": 1334089,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 2.5,
+          "fullIntensity": 12.489,
+          "emissions": 3433335,
+          "production": 1373334,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 2.5,
+          "fullIntensity": 11.595,
+          "emissions": 852394,
+          "production": 340958,
+          "partial": true
+        }
+      ]
+    }
+  ]
+}
