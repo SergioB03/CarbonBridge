@@ -25,24 +25,25 @@ That's it for hosting. The Copilot button will show "○ not wired" until you do
 
 ## 3. Deploy the copilot Lambda
 
-The code is in **`infra/lambda/`** (`copilot.mjs` + `package.json`). It calls Bedrock's Converse API.
+### Option A — one command (recommended): AWS SAM
+
+`infra/template.yaml` defines the Lambda + Function URL + CORS + the `bedrock:InvokeModel` IAM policy. Install the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) once, then:
 
 ```bash
-# Bundle it (the Bedrock SDK isn't in the default Lambda runtime, so vendor it):
-cd infra/lambda
-npm install
-zip -r ../copilot.zip .          # copilot.mjs + node_modules
+cd infra
+sam build                 # installs deps, packages the function
+sam deploy --guided       # first time: pick the SAME region as your Bedrock access; accept defaults
+#                           (creates samconfig.toml — afterwards just `sam deploy`)
 ```
 
-1. Console → **Lambda** → **Create function** → **Node.js 20.x** → name `carbonbridge-copilot`. Use the **same region** as Bedrock model access.
-2. **Upload** `copilot.zip`. Set **Handler = `copilot.handler`**.
-3. **Configuration → Permissions** → click the execution role → add an inline policy:
-   ```json
-   { "Version": "2012-10-17", "Statement": [
-     { "Effect": "Allow", "Action": "bedrock:InvokeModel", "Resource": "*" } ] }
-   ```
-4. **Configuration → Function URL** → Create → **Auth type: NONE** (demo) → **CORS: Allow origin `*`**. Copy the URL.
-   - (Optional) `MODEL_ID` env var to override the model. Increase **timeout to ~30s**.
+When it finishes, SAM prints **`CopilotUrl`** in the Outputs — that's your Function URL. To use Haiku instead of Sonnet: `sam deploy --parameter-overrides ModelId=anthropic.claude-haiku-4-5`.
+
+### Option B — console (no SAM CLI)
+
+1. `cd infra/lambda && npm install && zip -r ../copilot.zip .`
+2. Console → **Lambda** → **Create function** → **Node.js 20.x**, name `carbonbridge-copilot` (same region as Bedrock). **Upload** `copilot.zip`, **Handler = `copilot.handler`**, timeout 30s.
+3. **Permissions** → execution role → inline policy: `{ "Effect":"Allow","Action":"bedrock:InvokeModel","Resource":"*" }`.
+4. **Function URL** → Create → **Auth NONE**, **CORS allow origin `*`**. Copy the URL.
 
 ## 4. Wire the frontend to the copilot
 

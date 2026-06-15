@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: CarbonBridge CBAM copilot — Claude on Amazon Bedrock (one-command deploy).
+
+Parameters:
+  ModelId:
+    Type: String
+    Default: anthropic.claude-sonnet-4-6
+    Description: >-
+      Bedrock model id (anthropic.-prefixed). Use anthropic.claude-haiku-4-5 to
+      cut cost, or anthropic.claude-opus-4-8 for maximum quality.
+
+Resources:
+  CopilotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: carbonbridge-copilot
+      CodeUri: lambda/
+      Handler: copilot.handler
+      Runtime: nodejs20.x
+      Architectures: [arm64]
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          MODEL_ID: !Ref ModelId
+      FunctionUrlConfig:
+        AuthType: NONE # demo endpoint — tear down after the hackathon
+        Cors:
+          AllowOrigins: ['*']
+          AllowMethods: [POST, OPTIONS]
+          AllowHeaders: [content-type]
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: bedrock:InvokeModel
+              # Scope to the model ARN in production; '*' is convenience for the demo.
+              Resource: '*'
+
+Outputs:
+  CopilotUrl:
+    Description: Set this as VITE_COPILOT_URL in Amplify (or .env), then redeploy.
+    Value: !GetAtt CopilotFunctionUrl.FunctionUrl
