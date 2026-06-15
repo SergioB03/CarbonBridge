@@ -13,6 +13,30 @@ import { forecast, forecastTotals, EUR, NUM } from '../lib/calc'
 import { flaggedSuppliers } from '../lib/flag'
 import { Card, SectionTitle, Stat, Pill } from '../components/ui'
 
+const TIMELINE = [
+  {
+    when: '2026',
+    title: 'Liability accruing',
+    body: 'Emissions count at a 2.5% CBAM factor — but no certificates are surrendered yet. Nothing leaves your account.',
+    bar: 'bg-accent',
+    text: 'text-accent',
+  },
+  {
+    when: '30 Sep 2027',
+    title: 'First payment due',
+    body: 'First declaration and certificate surrender, covering 2026 imports. Certificate sales open Feb 2027.',
+    bar: 'bg-warn',
+    text: 'text-warn',
+  },
+  {
+    when: '2034',
+    title: 'Full rate',
+    body: 'Free allocation fully phased out; the CBAM factor reaches 100% and the cost gap is at its widest.',
+    bar: 'bg-danger',
+    text: 'text-danger',
+  },
+] as const
+
 export default function Dashboard() {
   const rows = forecast(SUPPLIERS)
   const { cumulativeAvoidable, firstPaymentYear, peak } = forecastTotals(rows)
@@ -34,20 +58,26 @@ export default function Dashboard() {
         }
       />
 
-      {/* Timeline-accurate framing banner */}
-      <div className="card flex flex-wrap items-center gap-x-6 gap-y-2 border-l-4 border-l-accent p-4 text-sm">
-        <span className="font-semibold text-text">CBAM timeline:</span>
-        <span className="text-mute">
-          <span className="text-accent">2026</span> — liability{' '}
-          <span className="text-text">accruing</span> at a 2.5% factor (no cash out yet)
-        </span>
-        <span className="text-mute">
-          <span className="text-warn">30 Sep 2027</span> —{' '}
-          <span className="text-text">first payment due</span> (for 2026 imports)
-        </span>
-        <span className="text-mute">
-          <span className="text-danger">2034</span> — free allocation gone, factor 100%
-        </span>
+      {/* Timeline-accurate framing — three distinct phases, not a run-on */}
+      <div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-mute">
+          CBAM timeline — what happens when
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {TIMELINE.map((s, i) => (
+            <div key={s.when} className="card relative overflow-hidden p-4">
+              <span className={`absolute inset-x-0 top-0 h-1 ${s.bar}`} />
+              <div className="flex items-center justify-between">
+                <span className={`stat-num text-base font-semibold ${s.text}`}>
+                  {s.when}
+                </span>
+                <span className="chip border-edge text-mute">Phase {i + 1}</span>
+              </div>
+              <div className="mt-2 text-sm font-semibold text-text">{s.title}</div>
+              <p className="mt-1 text-xs leading-relaxed text-mute">{s.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Headline stats */}
