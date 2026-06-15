@@ -2,6 +2,11 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+
+# lambda build artifacts
+infra/lambda/node_modules
+infra/**/*.zip
 .DS_Store
 .vscode/*
 !.vscode/extensions.json

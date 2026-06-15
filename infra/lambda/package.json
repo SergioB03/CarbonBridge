@@ -1,0 +1,10 @@
+{
+  "name": "carbonbridge-copilot-lambda",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "CBAM copilot Lambda — Claude on Amazon Bedrock (Converse API).",
+  "main": "copilot.mjs",
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.700.0"
+  }
+}

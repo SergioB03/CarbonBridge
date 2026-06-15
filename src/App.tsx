@@ -6,6 +6,7 @@ import FacilityMap from './views/FacilityMap'
 import VerificationFlag from './views/VerificationFlag'
 import Simulator from './views/Simulator'
 import LiveData from './views/LiveData'
+import Copilot from './components/Copilot'
 
 type ViewId = 'dashboard' | 'shelf' | 'map' | 'verify' | 'simulator' | 'live'
 
@@ -88,6 +89,8 @@ export default function App() {
           <Active />
         </div>
       </main>
+
+      <Copilot />
     </div>
   )
 }
