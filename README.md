@@ -10,13 +10,14 @@ CarbonBridge is a **frontend-only proof-of-concept** built with React + Vite + T
 
 The workspace is framed around **Meridian Metals BV**, a **mid-market importer** bringing in **well over 50 tonnes/year** of steel and aluminium. That threshold matters: the EU's Omnibus simplification introduced a **50-tonne exemption that removed roughly 90% of the smallest importers** from CBAM scope. Meridian sits comfortably above it — exactly the kind of company that still has a real, growing CBAM obligation but lacks a large in-house compliance team.
 
-## Five views
+## Six views
 
 1. **Dashboard** — accruing liability over time plus the *avoidable overpayment* (the gap between paying punitive defaults vs. verified actual emissions).
 2. **Comparison shelf** — ranks suppliers by carbon cost. Independent estimates are always shown as a **range + confidence label**, never a single hard number.
 3. **Facility map** — emissions intensity per facility alongside network/demand context.
 4. **Verification Priority Flag** — a **private triage signal** (visible only in the importer's own view) highlighting where a supplier's self-reported figure diverges from the independent estimate, so a small team knows where to spend its limited verification budget. It is *not* a public accusation. (See `docs/SPEC.md` for the full framing.)
-5. **Simulator & ledger** — what-if modelling of the payoff from supplier decarbonisation decisions.
+5. **Simulator & ledger** — what-if modelling of the payoff from supplier decarbonisation decisions; every supplier has its own slider and the impact ledger sums the lot.
+6. **Live data** — two production sources wired in for real (no keys, no backend): the **UK Carbon Intensity API** (live GB grid intensity + generation mix) and the **GLEIF LEI API** (company-identity lookup with a match-confidence score). Everything else is mock; this tab proves the pipeline is real. See `docs/MOCK_DATA.md`.
 
 ## The honest CBAM timeline
 

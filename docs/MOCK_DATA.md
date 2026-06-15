@@ -2,6 +2,17 @@
 
 The POC runs entirely on **mock JSON** (`src/data/suppliers.ts`, `src/data/cbam.ts`). All numbers are **illustrative** but **calibrated to published orders of magnitude**. This file is the **"where would the real data come from?"** reference for the data-sourcing and architecture questions.
 
+## Live integrations (actually wired, no mock)
+
+Two production sources are **genuinely live** in the app today — see the **Live data** tab. Both are free, need no API key, and are CORS-enabled so they run straight from the browser with no backend:
+
+| Source | Endpoint | What it proves |
+|---|---|---|
+| **UK Carbon Intensity API** | `api.carbonintensity.org.uk/intensity` + `/generation` | Live GB grid carbon intensity (gCO₂/kWh) + generation mix. The grid feed the cheat-sheet flagged as safe to plug in. |
+| **GLEIF LEI API** | `api.gleif.org/api/v1/lei-records` | Real global company-identity lookup with a match-confidence score — the entity-resolution layer, with a manual-confirm step (never auto-resolve). |
+
+Honest scope, surfaced in the UI: GB grid data is a real *proof of pipeline*, not a stand-in for a non-EU smelter's grid; and Climate TRACE assets carry no LEI, so the company→facility join stays semi-manual. Everything else below remains documented-but-mock for the POC.
+
 ## Production data sources (named, free)
 
 | Layer | Primary source | Notes / why |

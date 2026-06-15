@@ -5,8 +5,9 @@ import ComparisonShelf from './views/ComparisonShelf'
 import FacilityMap from './views/FacilityMap'
 import VerificationFlag from './views/VerificationFlag'
 import Simulator from './views/Simulator'
+import LiveData from './views/LiveData'
 
-type ViewId = 'dashboard' | 'shelf' | 'map' | 'verify' | 'simulator'
+type ViewId = 'dashboard' | 'shelf' | 'map' | 'verify' | 'simulator' | 'live'
 
 const NAV: { id: ViewId; label: string; icon: string; hint: string }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '▦', hint: 'Accruing liability & avoidable overpayment' },
@@ -14,6 +15,7 @@ const NAV: { id: ViewId; label: string; icon: string; hint: string }[] = [
   { id: 'map', label: 'Facility map', icon: '◎', hint: 'Emissions intensity & network demand' },
   { id: 'verify', label: 'Verification priority', icon: '⚑', hint: 'Private triage — where to verify first' },
   { id: 'simulator', label: 'Simulator & ledger', icon: '∿', hint: 'What-if decarbonisation payoff' },
+  { id: 'live', label: 'Live data', icon: '◉', hint: 'Real grid + company-ID feeds' },
 ]
 
 const VIEWS: Record<ViewId, () => JSX.Element> = {
@@ -22,6 +24,7 @@ const VIEWS: Record<ViewId, () => JSX.Element> = {
   map: FacilityMap,
   verify: VerificationFlag,
   simulator: Simulator,
+  live: LiveData,
 }
 
 export default function App() {
@@ -73,7 +76,8 @@ export default function App() {
           <div className="font-medium text-text">{IMPORTER.name}</div>
           <div>{IMPORTER.country} · EORI {IMPORTER.eori}</div>
           <div className="mt-2 rounded-lg bg-panel2 px-2 py-1.5">
-            Mock data · POC. Estimates shown as ranges + confidence.
+            Mock data · POC. Estimates shown as ranges + confidence. The Live
+            data tab uses real public feeds.
           </div>
         </div>
       </aside>
