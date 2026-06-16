@@ -9,7 +9,9 @@ import {
   NUM,
 } from '../lib/calc'
 import { scaleLinear } from 'd3-scale'
-import { Card, SectionTitle, Pill, FlagEmoji } from '../components/ui'
+import { byMaterial, MATERIALS } from '../lib/material'
+import { useAppState, useMode } from '../state/appState'
+import { Card, SectionTitle, Pill, FlagEmoji, PitchNote } from '../components/ui'
 
 const SIM_YEAR = 2030
 
@@ -23,13 +25,6 @@ const BASELINE: Record<string, number> = Object.fromEntries(
 const BASELINE_PER_TONNE: Record<string, number> = Object.fromEntries(
   SUPPLIERS.map((s) => [s.id, BASELINE[s.id] * CERT_PRICE_EUR]),
 )
-const BASELINE_RANK: Record<string, number> = (() => {
-  const order = [...SUPPLIERS].sort((a, b) => BASELINE[a.id] - BASELINE[b.id])
-  const m: Record<string, number> = {}
-  order.forEach((s, i) => (m[s.id] = i + 1))
-  return m
-})()
-
 // Colour by how far above its commodity benchmark a supplier runs (green→red),
 // so the shelf reads as "who's clean vs dirty" even before you touch a slider.
 const shelfColor = scaleLinear<string>()
@@ -38,16 +33,22 @@ const shelfColor = scaleLinear<string>()
   .clamp(true)
 
 export default function Simulator() {
+  const { material } = useAppState()
+  const mode = useMode()
+  const SUPS = byMaterial(SUPPLIERS, material)
+  const materialLabel = MATERIALS.find((m) => m.id === material)!.label
+
   // One independent what-if intensity per supplier — every company is editable.
   const [overrides, setOverrides] = useState<Record<string, number>>({ ...BASELINE })
 
   const setOne = (id: string, v: number) =>
     setOverrides((o) => ({ ...o, [id]: v }))
-  const resetAll = () => setOverrides({ ...BASELINE })
+  const resetAll = () =>
+    setOverrides((o) => ({ ...o, ...Object.fromEntries(SUPS.map((s) => [s.id, BASELINE[s.id]])) }))
 
   const agg = useMemo(() => {
-    const baseRows = forecast(SUPPLIERS)
-    const simRows = forecast(SUPPLIERS, overrides)
+    const baseRows = forecast(SUPS)
+    const simRows = forecast(SUPS, overrides)
     const cumSaved = baseRows.reduce(
       (a, r, i) => a + (r.verifiedCost - simRows[i].verifiedCost),
       0,
@@ -55,7 +56,7 @@ export default function Simulator() {
     let yearSaved = 0
     let co2Cut = 0
     let improved = 0
-    for (const s of SUPPLIERS) {
+    for (const s of SUPS) {
       const cur = overrides[s.id]
       yearSaved +=
         supplierYearCost(s, SIM_YEAR).verifiedCost -
@@ -65,20 +66,27 @@ export default function Simulator() {
     }
 
     // Live ranking by carbon cost per tonne (cheapest = best), using overrides.
-    const ranked = [...SUPPLIERS]
+    const ranked = [...SUPS]
       .map((s) => ({ s, perTonne: overrides[s.id] * CERT_PRICE_EUR }))
       .sort((a, b) => a.perTonne - b.perTonne)
     const rankOf: Record<string, number> = {}
     ranked.forEach((r, i) => (rankOf[r.s.id] = i + 1))
 
-    return { cumSaved, yearSaved, co2Cut, improved, ranked, rankOf }
-  }, [overrides])
+    // Baseline rank + shelf scale, both scoped to the active material set.
+    const baselineRankOf: Record<string, number> = {}
+    ;[...SUPS]
+      .sort((a, b) => BASELINE[a.id] - BASELINE[b.id])
+      .forEach((s, i) => (baselineRankOf[s.id] = i + 1))
+    const shelfMax = Math.max(...SUPS.map((s) => BASELINE_PER_TONNE[s.id]), 1)
+
+    return { cumSaved, yearSaved, co2Cut, improved, ranked, rankOf, baselineRankOf, shelfMax }
+  }, [overrides, SUPS])
 
   return (
     <div className="space-y-5">
       <SectionTitle
         kicker="Green-payoff simulator"
-        title="What if your suppliers decarbonised?"
+        title={material === 'all' ? 'What if your suppliers decarbonised?' : `What if your ${materialLabel.toLowerCase()} suppliers decarbonised?`}
         sub="Drag any supplier's slider on the left — the ledger and live shelf on the right update in tandem, no scrolling."
         right={
           <button
@@ -90,10 +98,20 @@ export default function Simulator() {
         }
       />
 
+      {mode === 'pitch' && (
+        <PitchNote title="What the sliders model (and what's held fixed)">
+          Each slider's <strong>starting point is that supplier's real sourced intensity</strong> (Climate TRACE,
+          held constant — no decarbonisation assumed). Dragging it down recomputes cost as{' '}
+          <strong>intensity × volume × CBAM factor × cert price</strong> across 2026–2034, using the same
+          legislated phase-in as the Overview. Floor = the commodity benchmark; ceiling = the independent
+          estimate's high. CO₂ cut is the intensity delta × annual tonnes — a what-if, not a commitment.
+        </PitchNote>
+      )}
+
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         {/* LEFT — compact slider per supplier */}
         <div className="space-y-3 lg:col-span-5">
-          {SUPPLIERS.map((s) => {
+          {SUPS.map((s) => {
             const baseline = BASELINE[s.id]
             const cur = overrides[s.id]
             const floor = +s.benchmark.toFixed(2)
@@ -161,7 +179,7 @@ export default function Simulator() {
               <LedgerStat label="CO₂ cut/yr" value={`${NUM(Math.max(0, agg.co2Cut))} t`} tone="accent" />
               <LedgerStat
                 label="Improved"
-                value={`${agg.improved}/${SUPPLIERS.length}`}
+                value={`${agg.improved}/${SUPS.length}`}
                 tone="text"
               />
             </div>
@@ -181,8 +199,8 @@ export default function Simulator() {
               <div className="space-y-1">
                 {agg.ranked.map(({ s, perTonne }, i) => {
             const moved = overrides[s.id] < BASELINE[s.id] - 1e-9
-            const max = Math.max(...Object.values(BASELINE_PER_TONNE)) || 1
-            const delta = BASELINE_RANK[s.id] - (i + 1) // >0 = climbed up
+            const max = agg.shelfMax
+            const delta = agg.baselineRankOf[s.id] - (i + 1) // >0 = climbed up
             const color = shelfColor(overrides[s.id] / s.benchmark)
             return (
               <div

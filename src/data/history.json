@@ -1,7 +1,7 @@
 {
   "source": "Climate TRACE — manufacturing, co2e_100yr (CC BY 4.0)",
   "release": "v5.7.0",
-  "note": "emissions_factor = CBAM-scope intensity (steel: direct; aluminium: direct+PFCs). fullIntensity = cradle-to-gate incl. purchased electricity (other2). Monthly source data aggregated to production-weighted annual.",
+  "note": "emissions_factor = CBAM-scope intensity (steel: direct; aluminium: direct+PFCs). fullIntensity = cradle-to-gate incl. purchased electricity (other2). Monthly source data aggregated to production-weighted annual. | Americas comparators (ids 9000000x) are illustrative: real plant/owner/LEI/location, emissions calibrated to published route + grid figures, NOT from the Climate TRACE extract.",
   "pulled": "static extract — no live API at runtime",
   "facilities": [
     {
@@ -603,6 +603,310 @@
           "partial": true
         }
       ]
+    },
+    {
+      "id": 90000001,
+      "name": "Nucor Steel Berkeley plant",
+      "country": "USA",
+      "subsector": "iron-and-steel",
+      "route": "EAF",
+      "lat": 33.06,
+      "lon": -79.92,
+      "owner": {
+        "parent": "Nucor Corporation",
+        "lei": "549300GGJCRSI2TIEJ46",
+        "hq": "USA"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 0.45,
+        "high": 0.45
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 0.45,
+        "fullIntensity": 0.92
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 0.45,
+          "fullIntensity": 0.98,
+          "emissions": 729000,
+          "production": 1620000,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 0.45,
+          "fullIntensity": 0.96,
+          "emissions": 767250,
+          "production": 1705000,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 0.45,
+          "fullIntensity": 0.95,
+          "emissions": 693000,
+          "production": 1540000,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 0.45,
+          "fullIntensity": 0.92,
+          "emissions": 760500,
+          "production": 1690000,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 0.45,
+          "fullIntensity": 0.92,
+          "emissions": 786600,
+          "production": 1748000,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 0.45,
+          "fullIntensity": 0.93,
+          "emissions": 193500,
+          "production": 430000,
+          "partial": true
+        }
+      ],
+      "illustrative": true
+    },
+    {
+      "id": 90000002,
+      "name": "Alcoa Warrick aluminium plant",
+      "country": "USA",
+      "subsector": "aluminum",
+      "route": "Smelting",
+      "lat": 37.93,
+      "lon": -87.32,
+      "owner": {
+        "parent": "Alcoa Corporation",
+        "lei": "549300T12EZ1F6PWWU29",
+        "hq": "USA"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "low",
+      "observedIntensity": {
+        "low": 2.6,
+        "high": 2.6
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 2.6,
+        "fullIntensity": 12.2
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 2.6,
+          "fullIntensity": 12.6,
+          "emissions": 655200,
+          "production": 252000,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 2.6,
+          "fullIntensity": 12.5,
+          "emissions": 678600,
+          "production": 261000,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 2.6,
+          "fullIntensity": 12.3,
+          "emissions": 670800,
+          "production": 258000,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 2.6,
+          "fullIntensity": 12.1,
+          "emissions": 647400,
+          "production": 249000,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 2.6,
+          "fullIntensity": 12.2,
+          "emissions": 683800,
+          "production": 263000,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 2.6,
+          "fullIntensity": 12.2,
+          "emissions": 171600,
+          "production": 66000,
+          "partial": true
+        }
+      ],
+      "illustrative": true
+    },
+    {
+      "id": 90000003,
+      "name": "Gerdau Ouro Branco steel plant",
+      "country": "BRA",
+      "subsector": "iron-and-steel",
+      "route": "BF/BOF",
+      "lat": -20.52,
+      "lon": -43.69,
+      "owner": {
+        "parent": "Gerdau S.A.",
+        "lei": "254900YDV6SEQQPZVG24",
+        "hq": "BRA"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 1.75,
+        "high": 1.75
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 1.75,
+        "fullIntensity": 2.1
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 1.75,
+          "fullIntensity": 2.21,
+          "emissions": 6160000,
+          "production": 3520000,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 1.75,
+          "fullIntensity": 2.18,
+          "emissions": 6317500,
+          "production": 3610000,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 1.75,
+          "fullIntensity": 2.16,
+          "emissions": 6072500,
+          "production": 3470000,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 1.75,
+          "fullIntensity": 2.12,
+          "emissions": 6457500,
+          "production": 3690000,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 1.75,
+          "fullIntensity": 2.1,
+          "emissions": 6615000,
+          "production": 3780000,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 1.75,
+          "fullIntensity": 2.11,
+          "emissions": 1662500,
+          "production": 950000,
+          "partial": true
+        }
+      ],
+      "illustrative": true
+    },
+    {
+      "id": 90000004,
+      "name": "Albras Barcarena aluminium plant",
+      "country": "BRA",
+      "subsector": "aluminum",
+      "route": "Smelting",
+      "lat": -1.51,
+      "lon": -48.62,
+      "owner": {
+        "parent": "Norsk Hydro ASA",
+        "lei": "549300N1SDN71ZZ8BO45",
+        "hq": "NOR"
+      },
+      "unit": "tCO₂e / t product",
+      "confidence": "medium",
+      "observedIntensity": {
+        "low": 2.1,
+        "high": 2.1
+      },
+      "latest": {
+        "year": 2025,
+        "intensity": 2.1,
+        "fullIntensity": 4.02
+      },
+      "series": [
+        {
+          "year": 2021,
+          "intensity": 2.1,
+          "fullIntensity": 4.42,
+          "emissions": 928200,
+          "production": 442000,
+          "partial": false
+        },
+        {
+          "year": 2022,
+          "intensity": 2.1,
+          "fullIntensity": 4.3,
+          "emissions": 947100,
+          "production": 451000,
+          "partial": false
+        },
+        {
+          "year": 2023,
+          "intensity": 2.1,
+          "fullIntensity": 4.18,
+          "emissions": 938700,
+          "production": 447000,
+          "partial": false
+        },
+        {
+          "year": 2024,
+          "intensity": 2.1,
+          "fullIntensity": 4.05,
+          "emissions": 955500,
+          "production": 455000,
+          "partial": false
+        },
+        {
+          "year": 2025,
+          "intensity": 2.1,
+          "fullIntensity": 4.02,
+          "emissions": 966000,
+          "production": 460000,
+          "partial": false
+        },
+        {
+          "year": 2026,
+          "intensity": 2.1,
+          "fullIntensity": 4,
+          "emissions": 243600,
+          "production": 116000,
+          "partial": true
+        }
+      ],
+      "illustrative": true
     }
   ]
 }

@@ -1,40 +1,29 @@
 import { IMPORTER } from './data/suppliers'
 import { useAppState } from './state/appState'
-import Home from './views/Home'
+import { MATERIALS } from './lib/material'
+import Overview from './views/Overview'
 import Suppliers from './views/Suppliers'
-import Dashboard from './views/Dashboard'
-import Evidence from './views/Evidence'
-import FacilityMap from './views/FacilityMap'
-import VerificationFlag from './views/VerificationFlag'
 import Simulator from './views/Simulator'
-import LiveData from './views/LiveData'
+import Evidence from './views/Evidence'
 import Copilot from './components/Copilot'
 
 const NAV: { id: string; label: string; icon: string; hint: string }[] = [
-  { id: 'home', label: 'Home', icon: '⌂', hint: 'Obligations, exposure & to-dos' },
-  { id: 'suppliers', label: 'Suppliers', icon: '◷', hint: 'Verification status & requests' },
-  { id: 'dashboard', label: 'Cost & forecast', icon: '▦', hint: 'Liability & avoidable overpayment' },
-  { id: 'verify', label: 'Verification priority', icon: '⚑', hint: 'Where to verify first' },
-  { id: 'simulator', label: 'Simulator & ledger', icon: '∿', hint: 'What-if decarbonisation payoff' },
-  { id: 'evidence', label: 'Evidence', icon: '▤', hint: 'Real measured Climate TRACE data' },
-  { id: 'map', label: 'Facility map', icon: '◎', hint: 'Emissions intensity & demand' },
-  { id: 'live', label: 'Live data', icon: '◉', hint: 'Real grid + company-ID feeds' },
+  { id: 'overview', label: 'Overview', icon: '▦', hint: 'Cost, to-dos & where it sits' },
+  { id: 'suppliers', label: 'Suppliers', icon: '◷', hint: 'Verify first & track requests' },
+  { id: 'simulator', label: 'Simulator', icon: '∿', hint: 'What-if decarbonisation payoff' },
+  { id: 'evidence', label: 'Evidence', icon: '▤', hint: 'Real measured data & live feeds' },
 ]
 
 const VIEWS: Record<string, () => JSX.Element> = {
-  home: Home,
+  overview: Overview,
   suppliers: Suppliers,
-  dashboard: Dashboard,
-  verify: VerificationFlag,
   simulator: Simulator,
   evidence: Evidence,
-  map: FacilityMap,
-  live: LiveData,
 }
 
 export default function App() {
-  const { view, setView, mode, setMode } = useAppState()
-  const Active = VIEWS[view] ?? Home
+  const { view, setView, mode, setMode, material, setMaterial } = useAppState()
+  const Active = VIEWS[view] ?? Overview
 
   return (
     <div className="flex min-h-screen">
@@ -50,7 +39,33 @@ export default function App() {
           </div>
         </div>
 
-        <nav className="mt-1 flex-1 space-y-1 overflow-y-auto px-3">
+        {/* Global material lens — the importer's primary filter */}
+        <div className="px-3 pb-2">
+          <div className="mb-1 px-1 text-[10px] font-semibold uppercase tracking-wider text-mute">
+            Material
+          </div>
+          <div className="grid grid-cols-2 gap-1">
+            {MATERIALS.map((m) => {
+              const active = m.id === material
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => setMaterial(m.id)}
+                  className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs font-medium transition ${
+                    active
+                      ? 'border-brand/40 bg-brand/10 text-brand'
+                      : 'border-edge text-mute hover:bg-panel2 hover:text-text'
+                  }`}
+                >
+                  <span className={active ? 'text-brand' : ''}>{m.icon}</span>
+                  {m.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <nav className="mt-1 flex-1 space-y-1 overflow-y-auto border-t border-edge px-3 pt-3">
           {NAV.map((n) => {
             const active = n.id === view
             return (

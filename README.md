@@ -10,14 +10,14 @@ CarbonBridge is a **frontend-only proof-of-concept** built with React + Vite + T
 
 The workspace is framed around **Meridian Metals BV**, a **mid-market importer** bringing in **well over 50 tonnes/year** of steel and aluminium. That threshold matters: the EU's Omnibus simplification introduced a **50-tonne exemption that removed roughly 90% of the smallest importers** from CBAM scope. Meridian sits comfortably above it — exactly the kind of company that still has a real, growing CBAM obligation but lacks a large in-house compliance team.
 
-## Six views
+## Navigate by material
 
-1. **Dashboard** — the cost command centre: accruing liability over time, the *avoidable overpayment* (punitive defaults vs. verified actuals), and a **per-supplier breakdown** for any year you pick (one year selector drives both the curve and the ranking). Independent estimates always shown as a **range + confidence label**, never a single hard number.
-2. **Evidence** — the real measured Climate TRACE data on its own: measured emissions/production by year, CBAM-scope vs out-of-scope footprint, and an auditable facility provenance table (owner + LEI). The ground truth behind every estimate.
-3. **Facility map** — emissions intensity per facility alongside network/demand context.
-4. **Verification Priority Flag** — a **private triage signal** (visible only in the importer's own view) highlighting where a supplier's self-reported figure diverges from the independent estimate, so a small team knows where to spend its limited verification budget. It is *not* a public accusation. (See `docs/SPEC.md` for the full framing.)
-5. **Simulator & ledger** — what-if modelling of the payoff from supplier decarbonisation decisions; every supplier has its own slider and the impact ledger sums the lot.
-6. **Live data** — two production sources wired in for real (no keys, no backend): the **UK Carbon Intensity API** (live GB grid intensity + generation mix) and the **GLEIF LEI API** (company-identity lookup with a match-confidence score). Everything else is mock; this tab proves the pipeline is real. See `docs/MOCK_DATA.md`.
+An importer thinks in the materials they declare, so a single global **material lens** (`All / Steel / Aluminium / Cement`) pinned in the sidebar scopes **every** screen at once. Behind that lens there are **four focused screens**:
+
+1. **Overview** — the command centre: a live to-do queue (where to request verified data), the accruing-liability cost curve and *avoidable overpayment* (punitive defaults vs. verified actuals) with a per-supplier breakdown for any year you pick, and the **facility map** (emissions intensity + import demand, geographically). Independent estimates always shown as a **range + confidence label**, never a single hard number.
+2. **Suppliers** — verify-first triage **and** the verification workflow on one screen: a tunable sensitivity slider, a priority queue of suppliers whose self-report diverges below the independent estimate (a **private triage signal**, never a public accusation — see `docs/SPEC.md`), and a full tracker table (flagged → unverified → requested → received → pool).
+3. **Simulator & ledger** — what-if modelling of the payoff from supplier decarbonisation; every supplier has its own slider and the impact ledger sums the lot.
+4. **Evidence** — the real measured Climate TRACE data (emissions/production by year, CBAM-scope vs out-of-scope footprint, an auditable owner + LEI provenance table) **plus live feeds** proving the pipeline is real: the **UK Carbon Intensity API** (live GB grid intensity + generation mix) and the **GLEIF LEI API** (company-identity lookup with a match-confidence score). See `docs/MOCK_DATA.md`.
 
 ## The honest CBAM timeline
 

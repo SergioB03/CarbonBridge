@@ -26,6 +26,9 @@ export interface HistFacility {
   observedIntensity: { low: number; high: number }
   latest: { year: number; intensity: number; fullIntensity: number | null }
   series: HistYear[]
+  /** True for the Americas comparators: real plant/owner/LEI, calibrated numbers,
+   *  NOT from the Climate TRACE static extract. */
+  illustrative?: boolean
 }
 
 export const HISTORY = data as unknown as {

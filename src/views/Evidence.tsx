@@ -11,8 +11,10 @@ import {
 } from 'recharts'
 import { HISTORY } from '../lib/history'
 import { NUM } from '../lib/calc'
-import { useMode } from '../state/appState'
-import { Card, SectionTitle, Stat, Pill, ConfidenceChip } from '../components/ui'
+import { facilitiesByMaterial, MATERIALS } from '../lib/material'
+import { useAppState, useMode } from '../state/appState'
+import { Card, SectionTitle, Stat, Pill, ConfidenceChip, PitchNote } from '../components/ui'
+import { GridPanel, LeiPanel, LiveDot } from './LiveData'
 
 const FULL_YEARS = [2021, 2022, 2023, 2024, 2025]
 const COMMODITY: Record<string, string> = {
@@ -32,11 +34,15 @@ const short = (n: string) =>
 export default function Evidence() {
   const [metric, setMetric] = useState<'emissions' | 'production'>('emissions')
   const mode = useMode()
+  const { material } = useAppState()
+
+  const facilities = facilitiesByMaterial(HISTORY.facilities, material)
+  const materialLabel = MATERIALS.find((m) => m.id === material)!.label
 
   // Chart 1: real measured emissions/production by year, stacked by commodity.
   const byYear = FULL_YEARS.map((y) => {
     const row: Record<string, number | string> = { year: y, Steel: 0, Cement: 0, Aluminium: 0 }
-    for (const f of HISTORY.facilities) {
+    for (const f of facilities) {
       const s = f.series.find((x) => x.year === y && !x.partial)
       if (!s) continue
       const label = COMMODITY[f.subsector] ?? 'Steel'
@@ -47,7 +53,7 @@ export default function Evidence() {
   })
 
   // Chart 2: CBAM-scope vs out-of-scope footprint, per facility.
-  const scopeRows = HISTORY.facilities
+  const scopeRows = facilities
     .map((f) => {
       const priced = f.latest.intensity
       const full = f.latest.fullIntensity ?? priced
@@ -55,11 +61,11 @@ export default function Evidence() {
     })
     .sort((a, b) => b.full - a.full)
 
-  const latestTotal = HISTORY.facilities.reduce(
+  const latestTotal = facilities.reduce(
     (a, f) => a + (f.series.find((s) => s.year === 2025 && !s.partial)?.emissions ?? 0),
     0,
   )
-  const cumulative = HISTORY.facilities.reduce(
+  const cumulative = facilities.reduce(
     (a, f) => a + f.series.filter((s) => !s.partial).reduce((b, s) => b + s.emissions, 0),
     0,
   )
@@ -68,14 +74,14 @@ export default function Evidence() {
     <div className="space-y-6">
       <SectionTitle
         kicker="Evidence — real measured data"
-        title="Before any forecast: this is the ground truth we're standing on"
-        sub="Every estimate, flag and cost in CarbonBridge traces back to this — real, named-facility emissions measured by Climate TRACE. No model output, no guesses."
-        right={<Pill tone="good">● real data</Pill>}
+        title={material === 'all' ? 'Before any forecast: this is the ground truth we’re standing on' : `${materialLabel} — the measured ground truth`}
+        sub="Most estimates, flags and costs trace back to real, named-facility emissions measured by Climate TRACE. A few Americas comparators (marked “est.”) carry real identity + LEI but calibrated numbers, so the book isn’t skewed to Asia/MENA."
+        right={<Pill tone="good">● mostly real data</Pill>}
       />
 
       {/* Provenance headline */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Stat label="Named facilities" value={HISTORY.facilities.length} sub="steel · cement · aluminium" tone="accent" />
+        <Stat label="Named facilities" value={facilities.length} sub={material === 'all' ? 'steel · cement · aluminium' : materialLabel.toLowerCase()} tone="accent" />
         <Stat label="Years measured" value={`${FULL_YEARS[0]}–${FULL_YEARS[FULL_YEARS.length - 1]}`} sub="annual, + partial 2026" />
         <Stat label="CO₂e measured 2025" value={`${NUM(latestTotal / 1e6, 1)} Mt`} sub="across the book" tone="warn" />
         <Stat label="Cumulative 21–25" value={`${NUM(cumulative / 1e6, 0)} Mt`} sub="real observed total" tone="danger" />
@@ -83,14 +89,13 @@ export default function Evidence() {
 
       {/* Why it matters NOW — pitch/judge framing */}
       {mode === 'pitch' && (
-        <div className="card border-l-4 border-l-brand p-4">
-          <div className="text-sm font-semibold text-text">Why this matters right now (no prediction needed)</div>
-          <ul className="mt-2 grid gap-1.5 text-sm text-mute sm:grid-cols-3">
-            <li>→ It sets each supplier's <span className="text-text">independent estimate range + confidence</span> — measured, not invented.</li>
-            <li>→ It's the baseline the <span className="text-text">Verification Priority</span> flag diverges from.</li>
-            <li>→ It anchors the <span className="text-text">cost</span> — real intensity × the legislated CBAM schedule.</li>
+        <PitchNote title="Why this matters right now (no prediction needed)">
+          <ul className="grid gap-1.5 sm:grid-cols-3">
+            <li>→ It sets each supplier's <strong>independent estimate range + confidence</strong> — measured, not invented.</li>
+            <li>→ It's the baseline the <strong>Verification Priority</strong> flag diverges from.</li>
+            <li>→ It anchors the <strong>cost</strong> — real intensity × the legislated CBAM schedule.</li>
           </ul>
-        </div>
+        </PitchNote>
       )}
 
       {/* Chart 1 — real measured volume over time */}
@@ -210,10 +215,17 @@ export default function Evidence() {
               </tr>
             </thead>
             <tbody>
-              {HISTORY.facilities.map((f) => (
+              {facilities.map((f) => (
                 <tr key={f.id} className="border-b border-edge/50 last:border-0">
                   <td className="px-5 py-2.5">
-                    <div className="font-medium text-text">{short(f.name)}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-medium text-text">{short(f.name)}</span>
+                      {f.illustrative && (
+                        <span className="chip border-edge text-mute" title="Real plant, owner & LEI; emissions calibrated to published figures — not from the Climate TRACE extract">
+                          est.
+                        </span>
+                      )}
+                    </div>
                     <div className="text-[11px] text-mute">{f.country}</div>
                   </td>
                   <td className="px-3 py-2.5 text-mute">{f.route}</td>
@@ -238,9 +250,24 @@ export default function Evidence() {
       <p className="text-xs text-mute">
         {HISTORY.source} · {HISTORY.release}. Modelled satellite + ML estimates, not
         audited installation reports — a credible baseline for triage and costing,
-        not a compliance filing. This is the present-day value of the data; the
-        forecast is a separate, deliberately conservative step.
+        not a compliance filing. Rows marked <span className="text-text">est.</span>{' '}
+        (US / Brazil comparators) carry a real plant, owner and LEI but calibrated
+        emissions, added for geographic balance — not part of the Climate TRACE
+        extract. This is the present-day value of the data; the forecast is a
+        separate, deliberately conservative step.
       </p>
+
+      {/* Live feeds — proof the pipeline is real, not hand-waved */}
+      <SectionTitle
+        kicker="Live integrations"
+        title="And it’s wired to real feeds, not just static files"
+        sub="Two production sources are genuinely live here (no API keys, no backend) — proof the data pipeline is real. Everything else in CarbonBridge is mock."
+        right={<span className="chip border-brand/40 text-brand"><LiveDot /> &nbsp;live feeds</span>}
+      />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <GridPanel />
+        <LeiPanel />
+      </div>
     </div>
   )
 }

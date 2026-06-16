@@ -42,6 +42,31 @@ export function SectionTitle({
   )
 }
 
+/**
+ * Pitch / judge-mode callout. Rendered prominently at the top of each view when
+ * `mode === 'pitch'`, so flipping the sidebar toggle produces an immediate,
+ * above-the-fold change with the methodology / sources / framing a judge wants.
+ */
+export function PitchNote({
+  title,
+  children,
+}: {
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <div className="card border-l-4 border-l-accent bg-accent/[0.06] p-4">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2">
+        <span className="chip border-accent/40 bg-accent/10 text-accent">◉ Pitch / judge view</span>
+        <span className="text-sm font-semibold text-text">{title}</span>
+      </div>
+      <div className="text-sm leading-relaxed text-mute [&_strong]:font-medium [&_strong]:text-text">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 export function Stat({
   label,
   value,

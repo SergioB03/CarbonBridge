@@ -45,7 +45,7 @@ function LiveDot() {
   )
 }
 
-function GridPanel() {
+export function GridPanel() {
   const [intensity, setIntensity] = useState<GridIntensity | null>(null)
   const [mix, setMix] = useState<FuelShare[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -167,7 +167,7 @@ function GridPanel() {
   )
 }
 
-function LeiPanel() {
+export function LeiPanel() {
   const [query, setQuery] = useState('Tata Steel')
   const [results, setResults] = useState<LeiMatch[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -295,23 +295,4 @@ function LeiPanel() {
   )
 }
 
-export default function LiveData() {
-  return (
-    <div className="space-y-6">
-      <SectionTitle
-        kicker="Live integrations"
-        title="Real data, wired in"
-        sub="Two of the production sources are genuinely live here (no API keys, no backend). Everything else in CarbonBridge is mock — these prove the pipeline is real, not hand-waved."
-        right={
-          <span className="chip border-brand/40 text-brand">
-            <LiveDot /> &nbsp;live feeds
-          </span>
-        }
-      />
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <GridPanel />
-        <LeiPanel />
-      </div>
-    </div>
-  )
-}
+export { LiveDot }

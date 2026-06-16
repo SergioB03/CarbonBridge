@@ -21,6 +21,7 @@ export const IMPORTER = {
 
 const ISO2: Record<string, string> = {
   KOR: 'kr', CHN: 'cn', IND: 'in', TUR: 'tr', VNM: 'vn', ARE: 'ae',
+  USA: 'us', BRA: 'br',
 }
 
 interface Overlay {
@@ -89,6 +90,32 @@ const OVERLAY: Record<string, Overlay> = {
     annualTonnesImported: 1150, inSharedPool: true, matchConfidence: 'high',
     matchBasis: 'country + CN code + named smelter (verified in pool)',
   },
+  // --- Americas comparators (illustrative; see history.json) — added so the
+  //     book isn't skewed entirely to Asia/MENA. ---
+  '90000001': { // Nucor (USA, EAF) — clean US scrap route
+    commodity: 'steel', cnCode: '72142000', route: 'EAF',
+    selfReported: 0.43, countryDefaultValue: 2.0, benchmark: 0.481,
+    annualTonnesImported: 1700, inSharedPool: false, matchConfidence: 'high',
+    matchBasis: 'country + CN code + named EAF installation',
+  },
+  '90000002': { // Alcoa Warrick (USA alu) — coal-heavy grid → huge full footprint
+    commodity: 'aluminium', cnCode: '76011000', route: 'n/a',
+    selfReported: 2.5, countryDefaultValue: 4.0, benchmark: 1.514,
+    annualTonnesImported: 1300, inSharedPool: false, matchConfidence: 'medium',
+    matchBasis: 'country + CN code; smelter inferred from grid + GEM tracker',
+  },
+  '90000003': { // Gerdau Ouro Branco (BRA, BF/BOF charcoal) — moderate
+    commodity: 'steel', cnCode: '72082700', route: 'BF-BOF',
+    selfReported: 1.6, countryDefaultValue: 2.8, benchmark: 1.37,
+    annualTonnesImported: 2200, inSharedPool: false, matchConfidence: 'medium',
+    matchBasis: 'country + CN code + named installation',
+  },
+  '90000004': { // Albras (BRA alu) — hydro grid → strikingly LOW full footprint
+    commodity: 'aluminium', cnCode: '76011000', route: 'n/a',
+    selfReported: 2.0, countryDefaultValue: 4.0, benchmark: 1.514,
+    annualTonnesImported: 1500, inSharedPool: true, matchConfidence: 'high',
+    matchBasis: 'country + CN code + named smelter (verified in pool)',
+  },
 }
 
 // Confidence → ± band on the real measured intensity (the independent estimate
@@ -123,6 +150,7 @@ export const SUPPLIERS: Supplier[] = history.facilities.map((f) => {
     historyId: f.id,
     owner: f.owner,
     fullFootprint: f.latest.fullIntensity ?? undefined,
+    illustrative: f.illustrative,
   }
 })
 

@@ -71,6 +71,8 @@ export interface Supplier {
    * aluminium this is mostly OUT of CBAM scope — shown for context, not pricing.
    */
   fullFootprint?: number
+  /** Americas comparator: real identity, calibrated numbers, not from the CT extract. */
+  illustrative?: boolean
 }
 
 /** Output of the verification-priority triage check for one supplier. */
