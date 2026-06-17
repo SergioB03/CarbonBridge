@@ -145,7 +145,12 @@ export default function Evidence() {
         const iJson = await iRes.json();
         const gJson = await gRes.json();
         const intensity = iJson?.data?.[0]?.intensity;
-        const generationmix = gJson?.data?.generationmix ?? [];
+        // The /generation payload labels each source as `fuel`; our render reads
+        // `generation`, so normalise it (and sort biggest-first for readability).
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const generationmix = (gJson?.data?.generationmix ?? [])
+          .map((g: any) => ({ generation: g.fuel ?? g.generation ?? '—', perc: g.perc ?? 0 }))
+          .sort((a: { perc: number }, b: { perc: number }) => b.perc - a.perc);
         if (!intensity) throw new Error('no intensity payload');
         setGridData({ intensity, generationmix });
       } catch {
